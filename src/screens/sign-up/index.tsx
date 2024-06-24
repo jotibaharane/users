@@ -5,6 +5,7 @@ import { AuthContext, AuthContextProps } from "App";
 import { Formik } from "formik";
 import React, { useContext } from "react";
 import {
+  Alert,
   ScrollView,
   Text,
   TextInput,
@@ -48,7 +49,11 @@ export default function SignUp({
           confirmPassword: "",
         }}
         validationSchema={SignUpSchema}
-        onSubmit={(values) => signUp(values)}
+        onSubmit={(values) => {
+          signUp(values);
+          Alert.prompt("User Created Succesfully");
+          navigation.navigate("SignIn");
+        }}
       >
         {({
           handleChange,

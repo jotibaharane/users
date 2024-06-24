@@ -5,6 +5,7 @@ export type RootNavigatorParamList = {
   SignIn?: undefined;
   Splash?: undefined;
   home?: undefined;
+  "user-list"?: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootNavigatorParamList> =

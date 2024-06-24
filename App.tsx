@@ -75,9 +75,7 @@ export default function App(): JSX.Element {
 
       try {
         userDetails = await SecureStore.getItemAsync("UseDetails");
-      } catch (e) {
-        // Restoring token failed
-      }
+      } catch (e) {}
 
       dispatch({ type: "RESTORE_TOKEN", token: userDetails });
     };
@@ -89,17 +87,21 @@ export default function App(): JSX.Element {
     () => ({
       signIn: async (data: any) => {
         const datas = await SecureStore.getItemAsync("UseDetails");
-        console.log(datas);
+
         const { email, password } = JSON.parse(datas!);
         if (email === data?.email && password === data?.password) {
           dispatch({ type: "SIGN_IN", token: "dummy-auth-token" });
         } else {
           Alert.alert("Alert", "Please Enter Correct Username And Password", [
-            { text: "OK", onPress: () => console.log("OK Pressed") },
+            { text: "OK", onPress: () => "" },
           ]);
         }
       },
-      signOut: () => dispatch({ type: "SIGN_OUT" }),
+      signOut: async () => {
+        await SecureStore.deleteItemAsync("UseDetails");
+        dispatch({ type: "SIGN_OUT" });
+      },
+
       signUp: async (data: any) => {
         await SecureStore.setItemAsync("UseDetails", JSON.stringify(data));
         dispatch({ type: "SIGN_UP", token: data });
